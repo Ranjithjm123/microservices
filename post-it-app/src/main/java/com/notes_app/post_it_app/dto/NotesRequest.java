@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class NotesRequest {
+    private Long id;
     private String name;
     private String Note;
 }

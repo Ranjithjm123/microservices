@@ -40,7 +40,25 @@ public class NotesService {
             res.add(noteResponse);
         }
         return res;
+    }
 
+    public NotesResponse updateNote(NotesRequest note) {
+        return notesRepository.findById(note.getId()).map(matchingNote -> {
+            matchingNote.setName(note.getName());
+            matchingNote.setNote(note.getNote());
+            notesRepository.save(matchingNote);
+            return mapToNoteResponse(matchingNote);
+        }).orElse(null);
+    }
+
+    private NotesResponse mapToNoteResponse(Notes note) {
+        NotesResponse notesResponse = new NotesResponse();
+
+        notesResponse.setId(note.getId());
+        notesResponse.setNote(note.getNote());
+        notesResponse.setName(note.getName());
+
+        return notesResponse;
     }
 
     public Boolean deleteNote(Long id) {
