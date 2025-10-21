@@ -30,6 +30,18 @@ public class NotesController {
         }
 
         return new ResponseEntity<>(note, HttpStatus.CREATED);
+    }
 
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editNote(@RequestHeader("X-User-Id") Long userId, @RequestBody NotesRequest editedNote) {
+        // TODO: We'll use the userID to later verify the request's origin by validating the userId
+
+        NotesResponse note = notesService.updateNote(editedNote);
+
+        if (note == null) {
+            return new ResponseEntity<>("Invalid Note ID", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(note, HttpStatus.ACCEPTED);
     }
 }
