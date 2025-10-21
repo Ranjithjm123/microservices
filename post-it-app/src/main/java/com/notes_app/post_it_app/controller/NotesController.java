@@ -2,6 +2,7 @@ package com.notes_app.post_it_app.controller;
 
 import com.notes_app.post_it_app.dto.NotesRequest;
 import com.notes_app.post_it_app.dto.NotesResponse;
+import com.notes_app.post_it_app.models.Notes;
 import com.notes_app.post_it_app.repositories.NotesRepository;
 import com.notes_app.post_it_app.services.NotesService;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,14 @@ public class NotesController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<NotesResponse> createNotes(@RequestBody NotesRequest notes){
-        NotesResponse newNotes = notesService.addNotes(notes);
+    public ResponseEntity<?> createNotes(@RequestBody NotesRequest freshNote) {
+        NotesResponse note = notesService.addNotes(freshNote);
 
-        if(newNotes != null)
-            return new ResponseEntity<>(newNotes, HttpStatus.CREATED);
+        if (note == null) {
+            return new ResponseEntity<>("Note not saved! Trg again...", HttpStatus.BAD_REQUEST);
+        }
 
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(note, HttpStatus.CREATED);
+
     }
-
-
 }
