@@ -5,7 +5,6 @@ import com.notes_app.post_it_app.dto.NotesResponse;
 import com.notes_app.post_it_app.models.Notes;
 import com.notes_app.post_it_app.repositories.NotesRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,9 +13,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class NotesService {
- private final NotesRepository notesRepository;
+    private final NotesRepository notesRepository;
 
-    public NotesResponse addNotes(NotesRequest notes){
+    public NotesResponse addNotes(NotesRequest notes) {
         Notes note = new Notes();
 
         note.setNote(notes.getNote());
@@ -33,8 +32,8 @@ public class NotesService {
     public List<NotesResponse> fetchAllNotes() {
 //        return notesRepository.findAll().stream().toList();
         List<Notes> notes = notesRepository.findAll();
-        List<NotesResponse> res = new ArrayList<>() ;
-        for(Notes note : notes) {
+        List<NotesResponse> res = new ArrayList<>();
+        for (Notes note : notes) {
             NotesResponse noteResponse = new NotesResponse();
             noteResponse.setName(note.getName());
             noteResponse.setNote(note.getNote());

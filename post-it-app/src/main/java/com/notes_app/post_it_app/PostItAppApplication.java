@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.notes_app.post_it_app.repositories")
 public class PostItAppApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PostItAppApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PostItAppApplication.class, args);
+    }
 
 }

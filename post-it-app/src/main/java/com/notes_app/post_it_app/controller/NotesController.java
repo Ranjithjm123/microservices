@@ -2,12 +2,9 @@ package com.notes_app.post_it_app.controller;
 
 import com.notes_app.post_it_app.dto.NotesRequest;
 import com.notes_app.post_it_app.dto.NotesResponse;
-import com.notes_app.post_it_app.models.Notes;
-import com.notes_app.post_it_app.repositories.NotesRepository;
 import com.notes_app.post_it_app.services.NotesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
