@@ -29,7 +29,6 @@ public class NotesService {
         return notesResponse;
     }
 
-    //
     public List<NotesResponse> fetchAllNotes() {
 //        return notesRepository.findAll().stream().toList();
         List<Notes> notes = notesRepository.findAll();
@@ -60,5 +59,17 @@ public class NotesService {
         notesResponse.setName(note.getName());
 
         return notesResponse;
+    }
+
+    public Boolean deleteNote(Long id) {
+        Optional<Notes> note = notesRepository.findById(id);
+
+        if (note.isEmpty()) {
+            return false;
+        }
+
+        notesRepository.deleteById(id);
+
+        return true;
     }
 }

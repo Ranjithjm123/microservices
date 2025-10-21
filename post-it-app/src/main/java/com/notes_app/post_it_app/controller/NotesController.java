@@ -44,4 +44,17 @@ public class NotesController {
 
         return new ResponseEntity<>(note, HttpStatus.ACCEPTED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeNote(@RequestHeader ("X-User-Id") Long userId, @PathVariable Long id) {
+        // TODO: We'll use the userID to later verify the request's origin by validating the userId
+        Boolean isRemoved = notesService.deleteNote(id);
+
+        if (!isRemoved) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
