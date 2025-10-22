@@ -3,7 +3,7 @@ services:
     build: ./User-app
     container_name: user-app
     ports:
-      - "8081:8080"
+      - "8081:8081"
 
   post-it-app:
     build: ./post-it-app
