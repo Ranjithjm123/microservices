@@ -10,3 +10,37 @@ services:
     container_name: post-it-app
     ports:
       - "8081:8081"
+
+  db:
+    image: postgres
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass
+      PGDATA: /data/pg
+    volumes:
+      - postgres_db_post-it-app:/data/pg
+    networks:
+      - notes-app-network
+
+  web-ui:
+    image: dpage/pgadmin4
+    container_name: web-ui
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    networks:
+      - notes-app-network
+networks:
+  notes-app-network:
+    driver: bridge
+
+volumes:
+  postgres_db_post-it-app:
+
+
+
