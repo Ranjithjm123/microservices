@@ -4,7 +4,7 @@ spring:
     name:post-it-app
 
   datasource:
-    url:  jdbc:postgresql://localhost:5432/notes
+    url:  jdbc:postgresql://db:5432/notes
     username: admin
     password: pass
 
@@ -13,7 +13,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 server:
   port: 8081
