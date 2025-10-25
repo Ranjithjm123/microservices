@@ -37,6 +37,7 @@ public class NotesService {
             NotesResponse noteResponse = new NotesResponse();
             noteResponse.setName(note.getName());
             noteResponse.setNote(note.getNote());
+            noteResponse.setId(note.getId());
             res.add(noteResponse);
         }
         return res;
