@@ -16,9 +16,9 @@ import java.util.List;
 public class NotesController {
     private final NotesService notesService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<NotesResponse>> getAllNotes() {
-        return new ResponseEntity<>(notesService.fetchAllNotes(), HttpStatus.OK);
+    @GetMapping("/all/{id}")
+    public ResponseEntity<NotesResponse> getAllNotes(@PathVariable Long id) {
+        return new ResponseEntity<>(notesService.fetchAllNotes(id), HttpStatus.OK);
     }
 
     @PostMapping("/new")

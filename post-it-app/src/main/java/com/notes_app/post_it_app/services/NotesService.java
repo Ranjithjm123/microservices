@@ -29,18 +29,10 @@ public class NotesService {
         return notesResponse;
     }
 
-    public List<NotesResponse> fetchAllNotes() {
-//        return notesRepository.findAll().stream().toList();
-        List<Notes> notes = notesRepository.findAll();
-        List<NotesResponse> res = new ArrayList<>();
-        for (Notes note : notes) {
-            NotesResponse noteResponse = new NotesResponse();
-            noteResponse.setName(note.getName());
-            noteResponse.setNote(note.getNote());
-            noteResponse.setId(note.getId());
-            res.add(noteResponse);
-        }
-        return res;
+    public NotesResponse fetchAllNotes(Long id) {
+        return notesRepository.findById(id)
+                .map(this::mapToNoteResponse)
+                .orElse(null);
     }
 
     public NotesResponse updateNote(NotesRequest note) {
