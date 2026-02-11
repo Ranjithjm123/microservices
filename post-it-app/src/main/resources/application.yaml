@@ -4,7 +4,7 @@ spring:
     name:post-it-app
 
   datasource:
-    url:  jdbc:postgresql://db:5432/notes
+    url:  jdbc:postgresql://localhost:5432/notes
     username: admin
     password: pass
 

@@ -11,6 +11,7 @@ import com.notes_app.user_app.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,37 +20,24 @@ public class UserService {
     private final UserRepository userRepository;
 
     public List<UserResponse> fetchAllUsers() {
-        return userRepository.findAll().stream().map(this::mapToUserResponse).collect(Collectors.toList());
-
-        // List<User> users = userRepository.findAll();
-
-        // List<UserResponse> resList = new ArrayList<>();
-        // for (User currentUser : users) {
-        // UserResponse currentUserResponse = mapToUserResponse(currentUser);
-        // resList.add(currentUserResponse);
-
-        // }
-
-        // return resList;
+        return userRepository.findAll().stream()
+                .map(this::mapToUserResponse)
+                .collect(Collectors.toList());
     }
 
-    public UserResponse fetchUserById(Long id){
-        return userRepository.findById(id).map(this::mapToUserResponse).orElse(null);
+    public Optional<UserResponse> fetchUserById(Long id) {
+        return userRepository.findById(id).map(this::mapToUserResponse);
     }
 
-    public UserResponse addUser(UserRequest user) {
-        User existingUser = userRepository.findByEmail(user.getEmail());
-
-        // If there is already a User with this email
-        if (existingUser != null) {
-            return null;
+    public Optional<UserResponse> addUser(UserRequest userRequest) {
+        // Check if email already exists
+        if (userRepository.findByEmail(userRequest.getEmail()) != null) {
+            return Optional.empty();
         }
 
-        User newUser = mapToUser(user);
-
-        newUser = userRepository.save(newUser);
-
-        return mapToUserResponse(newUser);
+        User newUser = mapToUser(userRequest);
+        User savedUser = userRepository.save(newUser);
+        return Optional.of(mapToUserResponse(savedUser));
     }
 
     private User mapToUser(UserRequest userRequest) {

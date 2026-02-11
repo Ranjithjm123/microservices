@@ -7,8 +7,6 @@ import com.notes_app.post_it_app.repositories.NotesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,53 +14,43 @@ import java.util.Optional;
 public class NotesService {
     private final NotesRepository notesRepository;
 
-    public NotesResponse addNotes(NotesRequest notes) {
+    public NotesResponse addNote(NotesRequest notesRequest) {
         Notes note = new Notes();
-
-        note.setNote(notes.getNote());
-        note.setName(notes.getName());
-        notesRepository.save(note);
-        NotesResponse notesResponse = new NotesResponse();
-        notesResponse.setNote(note.getNote());
-        notesResponse.setName(notes.getName());
-
-        return notesResponse;
+        note.setNote(notesRequest.getNote());
+        note.setName(notesRequest.getName());
+        
+        Notes savedNote = notesRepository.save(note);
+        return mapToNoteResponse(savedNote);
     }
 
-    public NotesResponse fetchAllNotes(Long id) {
-        return notesRepository.findById(id)
-                .map(this::mapToNoteResponse)
-                .orElse(null);
+    public Optional<NotesResponse> fetchNoteById(Long id) {
+        return notesRepository.findById(id).map(this::mapToNoteResponse);
     }
 
-    public NotesResponse updateNote(NotesRequest note) {
-        return notesRepository.findById(note.getId()).map(matchingNote -> {
-            matchingNote.setName(note.getName());
-            matchingNote.setNote(note.getNote());
-            notesRepository.save(matchingNote);
-            return mapToNoteResponse(matchingNote);
-        }).orElse(null);
+    public Optional<NotesResponse> updateNote(Long id, NotesRequest notesRequest) {
+        return notesRepository.findById(id).map(existingNote -> {
+            existingNote.setName(notesRequest.getName());
+            existingNote.setNote(notesRequest.getNote());
+            Notes updatedNote = notesRepository.save(existingNote);
+            return mapToNoteResponse(updatedNote);
+        });
     }
 
     private NotesResponse mapToNoteResponse(Notes note) {
         NotesResponse notesResponse = new NotesResponse();
-
         notesResponse.setId(note.getId());
         notesResponse.setNote(note.getNote());
         notesResponse.setName(note.getName());
-
+        notesResponse.setCreatedAt(note.getCreatedAt());
+        notesResponse.setUpdatedAt(note.getUpdatedAt());
         return notesResponse;
     }
 
-    public Boolean deleteNote(Long id) {
-        Optional<Notes> note = notesRepository.findById(id);
-
-        if (note.isEmpty()) {
-            return false;
+    public boolean deleteNote(Long id) {
+        if (notesRepository.existsById(id)) {
+            notesRepository.deleteById(id);
+            return true;
         }
-
-        notesRepository.deleteById(id);
-
-        return true;
+        return false;
     }
 }
